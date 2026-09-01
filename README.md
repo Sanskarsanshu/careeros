@@ -189,7 +189,3 @@ This is **Phase 1**. Product features (resume builder, ATS, RAG, AI) are intenti
 | redis | 6379 | Redis 7 |
 
 ---
-
-## Attributions
-
-See [ATTRIBUTIONS.md](ATTRIBUTIONS.md) for open-source foundations used in CareerOS.
