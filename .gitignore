@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+.Python
+.venv/
+venv/
+env/
+.env
+*.egg-info/
+dist/
+build/
+
+# FastAPI / Alembic
+backend/storage/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+frontend/.env
+frontend/.env.local
+frontend/.env.production
+
+# Environment secrets — NEVER commit
+.env
+.env.local
+.env.production
+*.env
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Test artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+*.log
+
+# Docker
+.dockerignore
+
+# OS
+*.DS_Store
