@@ -172,20 +172,7 @@ careeros/
 
 ---
 
-## Current Implementation Status
 
-| Feature | Status |
-|---------|--------|
-| Infrastructure (Docker, DB, Redis) | ✅ Phase 1 |
-| Authentication (JWT, register, login) | ✅ Phase 1 |
-| Health endpoints | ✅ Phase 1 |
-| Background worker (Celery) | ✅ Phase 1 |
-| Resume Builder | ⏳ Phase 2 |
-| Resume Import (PDF/DOCX) | ⏳ Phase 3 |
-| ATS Engine | ⏳ Phase 4 |
-| RAG Pipeline | ⏳ Phase 5 |
-| AI Generation | ⏳ Phase 6 |
-| Production hardening | ⏳ Phase 7 |
 
 This is **Phase 1**. Product features (resume builder, ATS, RAG, AI) are intentionally not implemented yet.
 
