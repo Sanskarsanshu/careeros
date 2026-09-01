@@ -1,7 +1,7 @@
 import pytest
 from httpx import AsyncClient
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio(loop_scope="session")
 async def test_register_and_login(async_client: AsyncClient):
     # Register
     register_response = await async_client.post(
@@ -36,7 +36,7 @@ async def test_register_and_login(async_client: AsyncClient):
     assert me_response.status_code == 200
     assert me_response.json()["email"] == "test@careeros.com"
 
-@pytest.mark.asyncio
+@pytest.mark.asyncio(loop_scope="session")
 async def test_unauthenticated_me(async_client: AsyncClient):
     me_response = await async_client.get("/api/v1/auth/me")
     assert me_response.status_code == 401

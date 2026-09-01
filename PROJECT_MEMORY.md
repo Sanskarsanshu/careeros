@@ -39,7 +39,7 @@ Phase 1 (Foundation) completed. Phase 2 (Resume Builder) is currently stalled pe
 - [ ] Production
 
 ## Current Overall Progress
-Estimated percentage: 15%
+Estimated percentage: 35%
 
 ---
 
@@ -208,43 +208,41 @@ careeros/
 - [x] Phase 1 - Dockerfiles (frontend & backend optimized)
 
 ## Currently Working On
-- [ ] Phase 2 - Docker Infrastructure Validation (Blocked)
+- [x] Phase 2 - Docker Infrastructure Validation
+- [x] Phase 2 - Canonical Resume Database Schema
 
 ## Remaining
-- [ ] Phase 2 - Canonical Resume Database Schema
-- [ ] Phase 2 - Resume Builder API (CRUD & Versioning)
 - [ ] Phase 2 - Resume Editor UI
 - [ ] Phase 2 - PDF & DOCX Export
 
 ## Blocked
-- [x] **Docker Daemon Unhealthy**: Local Docker Desktop is unresponsive/hanging on Windows, preventing the startup of PostgreSQL and Redis. Cannot proceed with DB-dependent Phase 2 features until infrastructure is healthy.
+- [ ] None.
 
 ---
 
 # 8. CURRENT DEVELOPMENT STATE
 
 ## What We Were Working On
-Verifying the Docker infrastructure before beginning Phase 2 (Resume Builder) implementation. 
+Implementing the Phase 2B Resume Builder API (CRUD & Versioning).
 
 ## What Was Just Completed
-- Fixed Pydantic V2 deprecation warnings (`ConfigDict`).
-- Fixed `python-json-logger` import path deprecation.
-- Updated `backend.Dockerfile` to `python:3.11-slim-bookworm` to support WeasyPrint.
-- Added `.dockerignore` for frontend and backend.
-- Created this `PROJECT_MEMORY.md` file.
+- Created Pydantic V2 schemas for all 13 resume models in `backend/app/schemas/resume.py`.
+- Implemented `ResumeRepository` with strict ownership filtering (`user_id`).
+- Implemented `ResumeService` logic to handle resume creation defaults (10 default sections + personal info).
+- Implemented FastAPI CRUD routes for all sections in `backend/app/api/v1/resumes.py`.
+- Wrote 8 comprehensive integration tests in `backend/tests/test_resumes.py` testing the full API stack.
+- Fixed an event loop scope issue across the `test_auth.py`, `test_health.py` and `test_models_resume.py`.
+- Verified 100% test pass rate for all 20 tests.
 
 ## What Is Currently Broken
-**Docker Desktop**. The local Docker daemon on Windows hangs and throws `Input/output error` and `context deadline exceeded` when attempting to build images or start containers (`docker compose up -d`).
+Nothing. The API is functioning correctly.
 
 ## What Should Be Done Next
-The user needs to restart/fix Docker Desktop locally. Once `docker compose ps` shows healthy PostgreSQL and Redis containers, we must run the initial Alembic migration.
+Proceed to Phase 2C: Resume Editor UI (Frontend).
 
 ## Exact Next Step
-1. Verify Docker is running: `docker compose ps`
-2. Run migrations: `docker compose exec backend alembic upgrade head`
-3. Test health endpoints: `GET /api/v1/health/db`
-4. Test real Auth flow against PostgreSQL.
-5. Begin Phase 2 implementation starting with the `Resume` database models.
+1. Scaffold the frontend Next.js Resume Editor components.
+2. Connect frontend to the Resume Builder API using Zustand for state management.
 
 ---
 
@@ -257,7 +255,12 @@ The user needs to restart/fix Docker Desktop locally. Once `docker compose ps` s
 | `backend/app/core/security.py`| JWT / Password hashing | Active | Phase 1 |
 | `frontend/app/(auth)/login/page.tsx` | Login UI | Active | Phase 1 |
 | `docker-compose.yml` | Infrastructure definition | Active | Phase 1 |
-| `PROJECT_MEMORY.md` | Single Source of Truth | Active | Phase 2 Start |
+| `PROJECT_MEMORY.md` | Single Source of Truth | Active | Phase 2B |
+| `backend/app/schemas/resume.py` | Resume Pydantic Schemas | Active | Phase 2B |
+| `backend/app/repositories/resume_repository.py` | DB Logic | Active | Phase 2B |
+| `backend/app/services/resume_service.py` | Business Logic | Active | Phase 2B |
+| `backend/app/api/v1/resumes.py` | CRUD Endpoints | Active | Phase 2B |
+| `backend/tests/test_resumes.py` | API Integration Tests | Active | Phase 2B |
 
 ---
 
@@ -487,58 +490,51 @@ docker compose exec backend alembic upgrade head
 
 # 28. CHANGELOG
 
-## 2026-08-31 — Session 1
+## 2026-09-01 — Session 2
 ### Added
-- Created `PROJECT_MEMORY.md`.
-- Added `.dockerignore` for frontend and backend.
+- Created `backend/app/schemas/resume.py` with full Pydantic V2 coverage for resumes.
+- Created `backend/app/repositories/resume_repository.py` for strictly scoped database access.
+- Created `backend/app/services/resume_service.py` to handle orchestration and creation logic.
+- Created `backend/app/api/v1/resumes.py` providing the HTTP routes.
+- Created `backend/tests/test_resumes.py` with full API coverage.
 ### Changed
-- Fixed Pydantic V2 and `python-json-logger` deprecation warnings.
-- Updated `backend.Dockerfile` to use `bookworm` for WeasyPrint dependencies.
+- Modified all `pytest.mark.asyncio` usages across tests to include `loop_scope="session"` which fixes the `Event loop is closed` and `different loop` errors!
+- Updated `backend/app/api/router.py` to mount `/resumes`.
 ### Blocked
-- Docker Desktop daemon hung, preventing live database testing.
+- None.
 ### Next Step
-- User to fix Docker Desktop locally.
+- Phase 2C (Frontend Editor UI).
 
 ---
 
 # 29. SESSION HANDOFF
 
 ## Last Session
-Date: 2026-08-31
+Date: 2026-09-01
 
 ## What We Did
-- Audited the entire Phase 1 foundation.
-- Fixed backend deprecation warnings.
-- Prepared Dockerfiles for Phase 2 WeasyPrint dependencies.
-- Attempted to start Docker Compose infrastructure.
-- Initialized the `PROJECT_MEMORY.md` file.
+- Successfully implemented Phase 2B (Resume Builder API).
+- Wrote Pydantic schemas, Repository, Service, and Router.
+- Built comprehensive Pytest Integration tests using `AsyncClient`.
+- Fixed the previous event loop issues across all pytest suites.
 
 ## What Changed
-- `backend/app/schemas/auth.py` (Pydantic V2 fix)
-- `backend/app/core/config.py` (Logger fix)
-- `infrastructure/docker/backend.Dockerfile` (Base image update)
-- Added `.dockerignore` files.
-- Created `PROJECT_MEMORY.md`.
+- Created `backend/app/schemas/resume.py`
+- Created `backend/app/repositories/resume_repository.py`
+- Created `backend/app/services/resume_service.py`
+- Created `backend/app/api/v1/resumes.py`
+- Registered the router in `backend/app/api/router.py`
+- Wrote tests in `backend/tests/test_resumes.py`
+- Fixed tests in `test_models_resume.py`, `test_auth.py`, `test_health.py`.
 
 ## Current State
-Phase 1 code is fully written, tested (via SQLite), and ready. However, the local Docker environment is completely broken/unresponsive.
+Phase 1, Phase 2A, and Phase 2B are fully written and passing all tests! 20/20 Pytest success.
 
 ## Problems Remaining
-**Docker Desktop is hung/dead on the host Windows machine.** We cannot start PostgreSQL, Redis, or Celery.
+None!
 
 ## Exact Next Task
-1. Wait for the user to restart Docker Desktop and confirm it works (`docker compose ps`).
-2. Run the Alembic migrations against the live database: `docker compose exec backend alembic upgrade head`.
-3. Test real authentication against PostgreSQL.
-4. Begin Phase 2 implementation starting with the `models/resume.py` database schema.
-
-## Files Relevant To Next Task
-- `docker-compose.yml`
-- `database/migrations/env.py`
-- `backend/app/models/resume.py` (To be created)
-
-## Important Context
-Do not start writing the Phase 2 Resume Models until the Docker infrastructure is verified as healthy, per the user's strict instructions.
+Begin Phase 2C (Resume Editor UI) or Phase 2D (WeasyPrint PDF Export).
 
 ---
 

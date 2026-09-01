@@ -9,7 +9,14 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 from alembic import context
 
 # Add backend directory to path so we can import app modules
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "backend"))
+# Handle both local execution and Docker execution
+backend_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "backend")
+if os.path.exists(backend_path):
+    sys.path.insert(0, backend_path)
+elif os.path.exists("/app/app"):
+    sys.path.insert(0, "/app")
+else:
+    sys.path.insert(0, os.getcwd())
 
 from app.core.config import settings
 from app.models import Base

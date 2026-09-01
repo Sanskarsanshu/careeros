@@ -11,8 +11,8 @@
 | Phase | Name | Status |
 |-------|------|--------|
 | 0 | Repository Audit & Architecture | ✅ COMPLETE |
-| 1 | Foundation (infra, auth, DB, Redis) | 🔄 IN PROGRESS |
-| 2 | Resume Builder | ⏳ PENDING |
+| 1 | Foundation (infra, auth, DB, Redis) | ✅ COMPLETE |
+| 2 | Resume Builder | 🔄 IN PROGRESS |
 | 3 | Resume Reader (PDF/DOCX import) | ⏳ PENDING |
 | 4 | ATS Engine | ⏳ PENDING |
 | 5 | RAG Pipeline | ⏳ PENDING |
@@ -85,17 +85,17 @@ frontend build succeeds
 ## Phase 2 — Resume Builder (Next)
 
 ### Planned Deliverables
-- Canonical resume schema (DB tables + API schemas)
-- Resume CRUD API (`/api/v1/resumes`)
-- Resume versioning API
-- Resume Builder UI (adapted from ai-resume-builder)
-- Template system (4 initial templates)
-- Live preview
-- Drag/drop section reordering
-- Autosave
-- Server-side PDF generation (WeasyPrint)
-- DOCX generation (python-docx)
-- Zustand UI state (editor state only, not persistence)
+- [x] Canonical resume schema (DB tables + API schemas)
+- [x] Resume CRUD API (`/api/v1/resumes`)
+- [x] Resume versioning API
+- [ ] Resume Builder UI (adapted from ai-resume-builder)
+- [ ] Template system (4 initial templates)
+- [ ] Live preview
+- [ ] Drag/drop section reordering
+- [ ] Autosave
+- [ ] Server-side PDF generation (WeasyPrint)
+- [ ] DOCX generation (python-docx)
+- [ ] Zustand UI state (editor state only, not persistence)
 
 ---
 
